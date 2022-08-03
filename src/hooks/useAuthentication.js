@@ -27,6 +27,7 @@ export const useAuthentication = () => {
     checkIfIsCancelled();
 
     setLoading(true);
+    setError("")
 
     try {
       const { user } = await createUserWithEmailAndPassword(
@@ -61,6 +62,7 @@ export const useAuthentication = () => {
     }
 
     
+    setLoading(false);
   };
 
   const logout = () => {
@@ -114,4 +116,5 @@ export const useAuthentication = () => {
     login,
     loading,
   };
+
 };

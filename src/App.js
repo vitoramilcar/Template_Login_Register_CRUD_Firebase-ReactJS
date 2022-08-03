@@ -7,6 +7,7 @@ import {BrowserRouter,Routes, Route,} from 'react-router-dom'
 // router
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
+import AllData from './pages/AllData/AllData';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
 
       <Route path="/login" element={<Login/>}/>
       <Route path="/register" element={<Register/>}/>
+      <Route path="/alldata" element={<AllData/>}/>
 
       </Routes>
       

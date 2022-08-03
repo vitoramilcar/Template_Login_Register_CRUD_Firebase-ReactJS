@@ -1,14 +1,13 @@
 import {useState,useEffect} from 'react'
 //import styles from "./Register.module.css"
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { collection, addDoc,setDoc, doc } from "firebase/firestore";
+import {collection,setDoc, doc , getDoc, updateDoc } from "firebase/firestore";
 import {db} from "../../firebase/config"
 
 
 
 const Register =  () => {
 
-  
 
   const [displayName,setDisplayName] = useState("");
   const [displayLastName,setDisplayLastName] = useState("");
@@ -49,16 +48,31 @@ const Register =  () => {
 
     const res = await createUser(user);
 
-    await setDoc(doc(db, "users", uid), {
-      nome: displayName,
-      sobrenome:displayLastName,
-      email: email,
-      meta: hoursGoal,
-    });
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+   
     
+    if (docSnap.exists() && res == undefined) {
+      
+      return
+
+    } 
+      
+    // doc.data() will be undefined in this case
+    else{ console.log("No such document!");
+      await setDoc(doc(db, "users", res.uid), {
+        nome: displayName,
+        sobrenome:displayLastName,
+        email: email,
+        meta: hoursGoal,  
+        idcard:uid    
+      }); 
+    }
+
+   
      
-    console.log(displayName)
     console.log(res)
+    console.log(res.uid)
   }
   
   useEffect(() => {
@@ -171,17 +185,9 @@ const Register =  () => {
             </button>
             )}
               {error && <p style={{color:"red"}} className = "error ">{error}</p>}
-               
-          
+             
           </form> 
-
-          
             </div>
-    
-    
-    
-
-
   )
 }
 

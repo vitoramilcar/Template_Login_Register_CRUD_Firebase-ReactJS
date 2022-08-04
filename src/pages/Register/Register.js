@@ -88,7 +88,7 @@ const Register =  () => {
     <div >
       
             <form onSubmit={handleSubmit}>
-            <span>Registration</span>
+            
               {/* Name */}
 
               
@@ -148,6 +148,7 @@ const Register =  () => {
               name = "hoursGoal"
               required
               placeholder="Hours Goal"
+              min ="0"
               max="40" 
               value = {hoursGoal}
               onChange={(e) => setHoursGoal(e.target.value)}

@@ -87,11 +87,11 @@ export const useAuthentication = () => {
       let systemErrorMessage;
 
       if (error.message.includes("user-not-found")) {
-        systemErrorMessage = "Usuário não encontrado.";
+        systemErrorMessage = "User not found";
       } else if (error.message.includes("wrong-password")) {
-        systemErrorMessage = "Senha incorreta.";
+        systemErrorMessage = "Wrong password";
       } else {
-        systemErrorMessage = "Ocorreu um erro, por favor tenta mais tarde.";
+        systemErrorMessage = "Error, try later";
       }
 
       console.log(systemErrorMessage);

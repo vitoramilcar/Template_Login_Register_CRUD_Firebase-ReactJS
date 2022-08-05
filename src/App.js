@@ -1,6 +1,6 @@
 import './App.css';
 //import {BrowserRouter,Routes, Route, Navigate} from 'react-router-dom'
-import {BrowserRouter,Routes, Route,} from 'react-router-dom'
+import {BrowserRouter,Routes, Route, Navigate,} from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth';
 
 //context
@@ -18,49 +18,42 @@ import Navbar from './components/Navbar';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import AllData from './pages/AllData/AllData';
+import Home from './pages/Home/Home'
 
 
 
 
 function App() {
+  const [user, setUser] = useState(undefined);
+  const { auth } = useAuthentication();
 
-  const[user,setUser]= useState(undefined)
-  const{auth}= useAuthentication()
-  const loadingUser = user === undefined
+  const loadingUser = user === undefined;
 
-  useEffect(()=>{
-
-    onAuthStateChanged(auth,(user)=>{
-
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
       setUser(user);
-    })
+    });
+  }, [auth]);
 
-
-  },[auth])
-
-  if(loadingUser){
-
-    return <p> Loading...</p>
-
+  if (loadingUser) {
+    return <p>Loading...</p>;
   }
-
-
   return (
     <div className="App">
 
 
     
-    <AuthProvider>
+    <AuthProvider value = {{user}}>
       <BrowserRouter>
       <Navbar/>
 
       <div className ="container">
       <Routes>
 
-
-      <Route path="/" element={<Login/>}/>
-      <Route path="/register" element={<Register/>}/>
-      <Route path="/alldata" element={<AllData/>}/>
+    
+      <Route path="/" element={!user ? <Login/> : <Home/>}/>
+      <Route path="/register" element={!user ? <Register/>: <Home/>}/>
+     {/*<Route path="/Home" element={user ? <AllData/> : <Login/>}/>*/} 
 
       </Routes>
       </div>

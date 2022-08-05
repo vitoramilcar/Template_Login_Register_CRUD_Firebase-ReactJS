@@ -1,6 +1,7 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocsquery,orderBy,onSnapshot,where } from "firebase/firestore";
 import {db} from "../../firebase/config"
 import {useState,useEffect} from 'react'
+
 
 
 function AllData() {
@@ -17,7 +18,13 @@ function AllData() {
   
   
   return (
-    <div>AllData</div>
+    <div>
+      <p>Dados do POVO aqui</p>
+      
+      
+      
+    </div>
+    
   )
 }
 

@@ -17,7 +17,6 @@ import Navbar from './components/Navbar';
 // router
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
-import AllData from './pages/AllData/AllData';
 import Home from './pages/Home/Home'
 
 

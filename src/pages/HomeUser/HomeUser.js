@@ -7,11 +7,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 
 
-//style
-import styles from "./Home.module.css"
+
 
 // components
-import TableHeader from "../../components/TableHeader";
+
 import UserDataTable from "../../components/UserDataTable";
 
 const Home = () => {
@@ -19,7 +18,7 @@ const Home = () => {
   const [user, setUser] = useState(undefined);
   const [ano,setAno] = useState("");
   const [mes,setMes] = useState("");
-  const [nomeform,setNomeForm] = useState("");
+  const [dia,setDia] = useState("");
   const { auth } = useAuthentication();
   const[objetouser,setObjetoUser] = useState("")
 
@@ -31,49 +30,92 @@ const Home = () => {
     });
   }, [auth]);
  
+  
+ 
+ 
 
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+  /*  
+   if(dia ===""){
+    console.log("BUSCA SEM DIA");
+    // Encontra todos do mes , com o id especifico
+          console.log(user.uid)
+    const museums = query(collectionGroup(db, mes+ano), where('userid', '==', user.uid))
+    const querySnapshot =  await getDocs(museums);
+    setObjetoUser(querySnapshot)
+    console.log(typeof(objetouser)+ "ESSA PORA È O OBJETO")
+    ///*
+    querySnapshot.forEach((doc) => {
+   if(doc){
+   console.log(doc.id, ' => ', doc.data());
+    console.log(typeof(doc.data())+"tipo do docdata()")
+    
+   }
+   else {
+    console.log("doc nao encontrado")
+   }
+   
+});
 
-if (nomeform ===""){
+   }
+   else{
 
+      //FAZ a BUSCA de um dia, mes e ano especifico
+    console.log(user.uid)
+    const docRef = await doc(db, "users", user.uid,mes+ano, dia);
+    const docSnap = await getDoc(docRef);
+   
+   if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
+  let dados = docSnap.data()
+  console.log("BUSCA COM DIA")
+  //console.log(dados.mespasta)
+
+   }
+   
+ 
+*/
+
+/*
+// PESQUISA o TODAS as PASTASdo mes especifico, todos os ids ---Para adm
+const dataAllUserDayMonth=(collectionGroup(db, mes+ano));
+const querySnapshot = await getDocs(dataAllUserDayMonth);
+querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+    let dataUsers = doc.data()
+  });
+
+  */
   const dataAllUserDayMonth=await (collectionGroup(db, mes+ano));
 
-  onSnapshot(dataAllUserDayMonth, (snapshot) => {
-    
-    setObjetoUser(snapshot.docs.map(doc => ({
-      
-      items: doc.data()
-    })) 
-    )
+onSnapshot(dataAllUserDayMonth, (snapshot) => {
   
-  })
-}
-  else{
+  setObjetoUser(snapshot.docs.map(doc => ({
+    
+    items: doc.data()
+  })) 
+  )
 
-    const UserDaTaMonth=await query(collectionGroup(db, mes+ano),where("nomec", '==',nomeform));
-
-    await onSnapshot(UserDaTaMonth, (snapshot) => {
-     
-     setObjetoUser(snapshot.docs.map(doc => ({
-       
-       items: doc.data()
-     })) 
-     )
-   
-   })
-  }
+})
 
 
+  
 };
+
 
 
   return (
 <div >
-
-      <form  className ={styles.formzero}onSubmit={handleSubmit}>
+      <h1>Search</h1>
+      <form  onSubmit={handleSubmit}>
 
 
               <label >
@@ -101,33 +143,29 @@ if (nomeform ===""){
               />
              
               </label>
-              {/*Nome*/}
+              {/*Dia */}
               <label >
-              <span>Name:</span>
+              <span>Day:</span>
               <input type="text"
               name = "dia"
               placeholder="Day"
-              value = {nomeform}
-              onChange={(e) => setNomeForm(e.target.value)}
+              value = {dia}
+              onChange={(e) => setDia(e.target.value)}
               
               />
               </label>
      
-        <button style ={{width:"70px", height:"60px" }}>Search</button>
+        <button >Pesquisar</button>
 
         
       </form>
+      <div>
 
-
-      
-    
-
-{objetouser &&(
-  <TableHeader/>
-)}    
          
 {objetouser && objetouser.map((objetodado)=>(
   
+
+
 <UserDataTable   key ={objetodado.items.diamespasta+objetodado.items.userid}
 nomec = {objetodado.items.nomec} 
 horac = {objetodado.items.hora_chegada.toMillis() }
@@ -145,7 +183,7 @@ meta ={objetodado.items.meta}
 )}
 
 </div>
-
+ </div>
   );
 };
 

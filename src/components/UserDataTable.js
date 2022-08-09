@@ -5,13 +5,17 @@ const UserDataTable = ({ nomec, horac, horas,horaw,horam,meta}) => {
     second: 'numeric',
     
 } 
-let horasf;
+  let horasf;
+ 
+
   let horacf = new Date(horac).toLocaleDateString( 'pt-br', option)
 
   if(typeof(horas) === 'number'){
    horasf =new Date(horas).toLocaleDateString( 'pt-br', option)
+
   }
 
+  //--------------Função mili to HH:MM-------------------
   function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
   }
@@ -28,21 +32,40 @@ let horasf;
     minutes = minutes % 60;
   
     hours = hours % 24;
-  
+
     return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
   }
 
+  function gethour(milliseconds){
+   
+   let hours= milliseconds*2.7777777777778E-7
 
+    return hours;
+
+  }
+
+//---------------------------------------------------------------------------------------------
+
+  
   return (
-    <ul  >
-            <li >nome:{nomec}</li>
-            <li >chegada: {horacf}</li>
-            <li>saída:{horasf}</li>
-            <li>hora dia: {horas ==="" ? 0: convertMsToHM(horas-horac)}</li>
-            <li>hora semana: {convertMsToHM(horaw)}</li>
-            <li>hora mes: {convertMsToHM(horam)}</li>
-            <li>meta:{meta}</li>
-    </ul>
+      
+    
+      <table>
+        
+      <tbody >
+    <tr style={ gethour(horas-horac) < parseInt(meta) ? ({color:"red"}):({color:"black"})} >
+     <td >{nomec}</td>
+     <td >{horacf}</td>
+     <td >{horasf}</td>
+     <td >{horas ==="" ? 0: convertMsToHM(horas-horac)}</td>
+     <td >{convertMsToHM(horaw)}</td>
+     <td >{convertMsToHM(horam)}</td>
+     <td >{meta}</td>
+     
+    </tr>
+      </tbody>
+      </table>
+
   )
 }
 

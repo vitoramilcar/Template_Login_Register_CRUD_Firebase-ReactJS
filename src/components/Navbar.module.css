@@ -33,3 +33,9 @@
     background-color: #000;
     color: #fff;
   }
+
+  .imagelogo{
+  width: 250px;
+  height: 100px;
+  object-fit: fill;
+  }

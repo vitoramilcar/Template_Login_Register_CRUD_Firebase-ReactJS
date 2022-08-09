@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react'
-//import styles from "./Register.module.css"
+import styles from "./Register.module.css"
 import { useAuthentication } from "../../hooks/useAuthentication";
 import {collection,setDoc, doc , getDoc, updateDoc } from "firebase/firestore";
 import {db} from "../../firebase/config"
@@ -85,7 +85,7 @@ const Register =  () => {
     
     
     
-    <div >
+    <div className ={styles.jose}>
       
             <form onSubmit={handleSubmit}>
             

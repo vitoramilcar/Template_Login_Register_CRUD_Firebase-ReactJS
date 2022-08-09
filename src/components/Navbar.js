@@ -24,6 +24,7 @@ const Navbar = () => {
     {!user && (
       <>
       
+      
       {/*------------------ Login Link -----------------------*/}
       <li>
       <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Login </NavLink>
@@ -50,7 +51,7 @@ const Navbar = () => {
       )
       }
      
-
+        
 
 
         </ul>

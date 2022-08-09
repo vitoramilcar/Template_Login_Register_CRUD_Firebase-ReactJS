@@ -16,6 +16,7 @@ import UserDataTable from "../../components/UserDataTable";
 
 const Home = () => {
   
+  
   const [user, setUser] = useState(undefined);
   const [ano,setAno] = useState("");
   const [mes,setMes] = useState("");
@@ -24,7 +25,7 @@ const Home = () => {
   const[objetouser,setObjetoUser] = useState("")
 
 
-
+  
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -39,7 +40,7 @@ const Home = () => {
 
 if (nomeform ===""){
 
-  const dataAllUserDayMonth=await (collectionGroup(db, mes+ano));
+  const dataAllUserDayMonth=await query(collectionGroup(db, mes+ano),orderBy("hora_chegada","asc"));
 
   onSnapshot(dataAllUserDayMonth, (snapshot) => {
     
@@ -106,7 +107,7 @@ if (nomeform ===""){
               <span>Name:</span>
               <input type="text"
               name = "dia"
-              placeholder="Day"
+              placeholder="Name"
               value = {nomeform}
               onChange={(e) => setNomeForm(e.target.value)}
               

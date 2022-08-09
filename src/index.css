@@ -162,8 +162,3 @@ button[disabled] {
     border-bottom: 2px solid rgb(218, 24, 218);
   }
   
-  table tbody tr.activerow {
-    font-weight: bold;
-    color: rgb(218, 24, 218);
-  }
-  

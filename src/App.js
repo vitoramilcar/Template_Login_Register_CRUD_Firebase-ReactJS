@@ -1,7 +1,7 @@
 import './App.css';
 //import {BrowserRouter,Routes, Route, Navigate} from 'react-router-dom'
 import {BrowserRouter,Routes, Route, Navigate,} from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged,getAuth } from 'firebase/auth';
 
 //context
 import { AuthProvider } from './context/AuthContext';
@@ -18,12 +18,14 @@ import Navbar from './components/Navbar';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home'
+import HomeUser from './pages/HomeUser/HomeUser';
 
 
 
 
 function App() {
   const [user, setUser] = useState(undefined);
+  const [uidauth,setUidAuth] = useState("")
   const { auth } = useAuthentication();
 
   const loadingUser = user === undefined;
@@ -37,6 +39,25 @@ function App() {
   if (loadingUser) {
     return <p>Loading...</p>;
   }
+
+
+  const autenti = getAuth();
+  onAuthStateChanged(autenti, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      setUidAuth(user.uid)
+      
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+
+  });
+
+
+
   return (
     <div className="App">
 
@@ -48,11 +69,25 @@ function App() {
 
       <div className ="container">
       <Routes>
+      
+      {user && (
 
-    
-      <Route path="/" element={!user ? <Login/> : <Home/>}/>
-      <Route path="/register" element={!user ? <Register/>: <Home/>}/>
-     {/*<Route path="/Home" element={user ? <AllData/> : <Login/>}/>*/} 
+
+    <Route path="/" element={uidauth ==='RVpqxRZp6fNR7Rk2WSueOiHlZr82' ? <Home/> : <HomeUser/>}/>
+
+
+      )}
+
+    {!user && (
+
+      <>
+      <Route path="/" element={ <Login/>}/>
+      <Route path="/register" element={ <Register/>}/>
+      </>
+
+    )}
+      
+     
 
       </Routes>
       </div>

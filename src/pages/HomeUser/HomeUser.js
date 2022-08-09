@@ -13,7 +13,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import UserDataTable from "../../components/UserDataTable";
 
-const Home = () => {
+const HomeUser = () => {
   
   const [user, setUser] = useState(undefined);
   const [ano,setAno] = useState("");
@@ -187,4 +187,4 @@ meta ={objetodado.items.meta}
   );
 };
 
-export default Home;
+export default HomeUser;

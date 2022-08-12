@@ -13,6 +13,8 @@ const Register =  () => {
   const [displayLastName,setDisplayLastName] = useState("");
   const [email,setEmail] = useState("");
   const [uid,setUID] = useState("");
+  const [cpf,setCPF] = useState("");
+  const [equipe,setEquipe] = useState("");
   const [hoursGoal,setHoursGoal] = useState(0);
   const [password,setPassword] = useState("");
   const [confirmPassword,setConfirmPassword] = useState("");
@@ -39,6 +41,15 @@ const Register =  () => {
 
 
     }
+
+    if(cpf.length !=11){
+
+      setError("Cpf invalid ")
+      return
+
+    }
+
+
     if(password !==confirmPassword){
 
       setError("password must be the same")
@@ -65,7 +76,10 @@ const Register =  () => {
         sobrenome:displayLastName,
         email: email,
         meta: hoursGoal,  
-        idcard:uid    
+        idcard:uid,
+        cpf: cpf,
+        equipe:equipe,
+        nomecompleto:displayName+" "+displayLastName
       }); 
     }
 
@@ -112,10 +126,35 @@ const Register =  () => {
               placeholder="Enter your last name"
               value = {displayLastName}
               onChange={(e) => setDisplayLastName(e.target.value)}
-              
+              />
+              </label>
+              {/*Cpf */}
+              <label >
+              <span>CPF:</span>
+              <input type="number"
+              name = "cpf"
+              required
+              placeholder="Enter your Cpf" 
+              value = {cpf}
+              onChange={(e) => setCPF(e.target.value)}
               />
               </label>
               
+              {/*Equipe */}
+
+              <label >
+              <span>Equipe:</span>
+              <input type="text"
+              name = "equipe"
+              required
+              placeholder="Enter your Team"
+              value = {equipe}
+              onChange={(e) => setEquipe(e.target.value)}
+              />
+              </label>
+
+
+
               {/* email */}
               <label >
               <span>Email:</span>
@@ -149,7 +188,7 @@ const Register =  () => {
               required
               placeholder="Hours Goal"
               min ="0"
-              max="40" 
+              max="200" 
               value = {hoursGoal}
               onChange={(e) => setHoursGoal(e.target.value)}
               />

@@ -73,7 +73,8 @@ function App() {
       {user && (
 
 
-    <Route path="/" element={uidauth ==='RVpqxRZp6fNR7Rk2WSueOiHlZr82' ? <Home/> : <HomeUser/>}/>
+<Route path="/" element={ <Home/>}/>
+   
 
 
       )}

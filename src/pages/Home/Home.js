@@ -1,8 +1,8 @@
-import { query, collectionGroup, where, getDocs, addDoc , collection, orderBy, doc, getDoc, onSnapshot} from "firebase/firestore";
+import { query, collectionGroup, where, getDocs, addDoc , collection, orderBy, doc, getDoc, onSnapshot, setDoc,updateDoc} from "firebase/firestore";
 import {db} from "../../firebase/config"
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged,getAuth } from 'firebase/auth';
 
 
 
@@ -11,18 +11,167 @@ import { onAuthStateChanged } from 'firebase/auth';
 import styles from "./Home.module.css"
 
 // components
-import TableHeader from "../../components/TableHeader";
-import UserDataTable from "../../components/UserDataTable";
 
-const Home = () => {
-  
-  
+import DashboardHome from "../../components/DashboardHome";
+import TableHeaderDash from "../../components/TableHeaderDash";
+
+const Home =  () => {
+ 
+ 
+  let data = new Date();
+  let diames = data.getDate()
+  let diasemana = data.getDay()
+  let anomes = (data.getMonth()+1).toString()+( data.getFullYear().toString())
+
+
   const [user, setUser] = useState(undefined);
-  const [ano,setAno] = useState("");
-  const [mes,setMes] = useState("");
-  const [nomeform,setNomeForm] = useState("");
   const { auth } = useAuthentication();
+  const [documents, setDocuments] = useState(null);
   const[objetouser,setObjetoUser] = useState("")
+
+
+//-----------------------------------------------------------------------------------------------------
+async function calc_hshm(docsid){
+
+  let datapasta = ((data.getMonth()+1).toString()) + ((data.getFullYear()).toString())+ (data.getDate().toString());
+  let sumhs = 0;
+  let sumhm = 0;
+
+  //------------------------Calcula a Semana---------------------
+  for(let i=(diasemana);i>=0; i--){
+
+    let auxdmes = (anomes+diames) - i;
+    
+    const docRef = await doc(db, "users", docsid,"Data",auxdmes.toString());
+    const docSnap = await  getDoc(docRef);
+
+    
+    if (docSnap.exists() ) {
+
+      sumhs = docSnap.data().hora_dia + sumhs;
+      console.log(auxdmes + "primeiro for");
+        
+      console.log(sumhs);
+
+    }  
+  }
+
+  for(let i=diames;i>=0; i--){
+
+    let auxdmes = anomes+diames - i;
+    
+     
+    const docRefm = await doc(db, "users", docsid,"Data",auxdmes.toString());
+    const docSnapm = await  getDoc(docRefm);
+      
+    if(docSnapm.exists()){
+      
+      await  updateDoc(doc(db, "users", docsid,"Data", auxdmes.toString()), {
+        ultimodia:false
+    
+      }); 
+      sumhm = docSnapm.data().hora_dia + sumhm;
+      console.log(sumhm);
+
+    }  
+  }
+
+ await  updateDoc(doc(db, "users", docsid,"Data", datapasta), {
+    hora_semana:sumhs,
+    hora_mes:sumhm
+
+  }); 
+
+
+
+}
+
+//---------------------------------------------------------------------------------------------
+
+
+
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+
+    
+   //--------------Cria uma pasta do dia para a pessoa que não tiver------------------------------------------------------------ 
+    let datapasta = ((data.getMonth()+1).toString()) + ((data.getFullYear()).toString())+ (data.getDate().toString());
+    const collectionRef = await collection(db, 'users');
+
+    await onSnapshot(collectionRef, (querySnapshot) => {
+      setDocuments(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    });
+
+   (documents && documents.map(async (docsid) => {
+
+    const docRef = await doc(db, "users", docsid.id,"Data",datapasta);
+    const docSnap = await  getDoc(docRef);
+  
+    if (docSnap.exists() ) {
+      console.log("existe essa merda")
+      return
+
+    } 
+      else{
+        
+        const docfirstdata = await getDoc(doc(db, "users", docsid.id));
+        
+          
+        await setDoc(doc(db, "users", docsid.id,"Data", datapasta), {
+          nomec: docfirstdata.data().nome +" "+ docfirstdata.data().sobrenome,
+          meta:docfirstdata.data().meta,
+          hora_dia:0,
+          hora_chegada:0,
+          hora_saida:null,
+          hora_semana:0,
+          hora_mes:0,
+          ultimodia:true,
+          anopasta: data.getFullYear(),
+          mespasta:(data.getMonth()+1),
+          diamespasta:data.getDate(),
+          equipe:docfirstdata.data().equipe
+          
+          
+        }); 
+        calc_hshm(docsid.id)
+            console.log("naoexiste essa merda");
+      }
+   })
+   )
+ //------------------------------------------------------------------------------------------------------------------   
+
+//---------------------------------Dashboard do Dia------------------------------------------------------------------
+   const UserDaTaMonth=await query(collectionGroup(db, 'Data'),where("anopasta", '==',data.getFullYear()),
+   where("diamespasta", '==',data.getDate()),where("mespasta", '==',(data.getMonth()+1)),orderBy("nomec","asc"));
+
+   await onSnapshot(UserDaTaMonth, (snapshot) => {
+    
+    setObjetoUser(snapshot.docs.map(doc => ({
+      
+      items: doc.data()
+    })) 
+    )
+  
+  })
+
+
+
+  //---------------------------------------------------------------------------------------------------------------
+  }
+
+
+
+
+
+
+
+
 
 
   
@@ -34,108 +183,40 @@ const Home = () => {
  
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-
-if (nomeform ===""){
-
-  const dataAllUserDayMonth=await query(collectionGroup(db, mes+ano),orderBy("hora_chegada","asc"));
-
-  onSnapshot(dataAllUserDayMonth, (snapshot) => {
-    
-    setObjetoUser(snapshot.docs.map(doc => ({
-      
-      items: doc.data()
-    })) 
-    )
   
-  })
-}
-  else{
-
-    const UserDaTaMonth=await query(collectionGroup(db, mes+ano),where("nomec", '==',nomeform));
-
-    await onSnapshot(UserDaTaMonth, (snapshot) => {
-     
-     setObjetoUser(snapshot.docs.map(doc => ({
-       
-       items: doc.data()
-     })) 
-     )
-   
-   })
-  }
 
 
-};
+
 
 
   return (
 <div >
 
-      <form  className ={styles.formzero}onSubmit={handleSubmit}>
+<form onSubmit={handleSubmit} style={{display :"flex"}} >
 
 
-              <label >
-              {/*Ano */}
-              <span>Year:</span>
-              <input type="text"
-              name = "ano"
-              required
-              placeholder="Year" 
-              value = {ano}
-              onChange={(e) => setAno(e.target.value)} 
-              />
-             
-              </label>
-
-            <label >
-              {/*Mês */}
-              <span>Month:</span>
-              <input type="text"
-              name = "mes"
-              required
-              placeholder="Month" 
-              value = {mes}
-              onChange={(e) => setMes(e.target.value)} 
-              />
-             
-              </label>
-              {/*Nome*/}
-              <label >
-              <span>Name:</span>
-              <input type="text"
-              name = "dia"
-              placeholder="Name"
-              value = {nomeform}
-              onChange={(e) => setNomeForm(e.target.value)}
-              
-              />
-              </label>
-     
-        <button style ={{width:"70px", height:"60px" }}>Search</button>
-
-        
-      </form>
+<button  > Refresh </button>
+</form>
 
 
-      
-    
+  
 
 {objetouser &&(
-  <TableHeader/>
+  <TableHeaderDash/>
 )}    
          
 {objetouser && objetouser.map((objetodado)=>(
   
-<UserDataTable   key ={objetodado.items.diamespasta+objetodado.items.userid}
+<DashboardHome  key ={objetodado.items.diamespasta+objetodado.items.nomec}
 nomec = {objetodado.items.nomec} 
-horac = {objetodado.items.hora_chegada.toMillis() }
+horac = {objetodado.items.hora_chegada === 0 ? 0 : objetodado.items.hora_chegada.toMillis() }
 horas = {objetodado.items.hora_saida== null ? "": objetodado.items.hora_saida.toMillis() }
 horaw = {objetodado.items.hora_semana}
 horam ={objetodado.items.hora_mes}
 meta ={objetodado.items.meta}
+team ={objetodado.items.equipe}
+horad ={objetodado.items.hora_dia}
 /> 
 ))}
 
@@ -144,6 +225,7 @@ meta ={objetodado.items.meta}
     <p>Não foram encontrados registros</p>
   </div>
 )}
+
 
 </div>
 

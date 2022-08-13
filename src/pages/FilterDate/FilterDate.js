@@ -12,7 +12,8 @@ function FilterDate() {
 
     const [user, setUser] = useState(undefined);
     const { auth } = useAuthentication();
-    const [nomeform,setNomeForm] = useState("");
+    const [date1,setDate1] = useState("");
+    const [date2,setDate2] = useState("");
     const[objetouser,setObjetoUser] = useState([])
   
 
@@ -29,10 +30,14 @@ function FilterDate() {
       
 //Segunda Solução-------------------------------------- 
 
+console.log(new Date (Date.parse(date1)+10800000))
+console.log(new Date (Date.parse(date2)+97200000))
+
+
 let sumhp =0;
 console.log("oi")
         const Filterdatetodate= query(collectionGroup(db, 'Data'),where("nomec", '==','Bill Gates'),orderBy("date") ,
-        startAt(new Date(1659322800000)),endAt(new Date(1660359600000)))
+        startAt(new Date (Date.parse(date1)+10800000)),endAt(new Date (Date.parse(date2)+97200000)))
         const querySnapshot = await getDocs(Filterdatetodate);
        (querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
@@ -134,9 +139,31 @@ console.log(sumhp + "Essa é a soma")
 
 <form onSubmit={handleSubmit} style={{display :"flex"}} >
 
+    
+  
+                 
+                  {/*Date1*/}
+                  <label style={{boxSizing:'border-box', height:'100px',width:'400px'}}>
+                  <span>Name:</span>
+                  <input type="date"
+                  name = "date1"
+                  value = {date1}
+                  onChange={(e) => setDate1(e.target.value)}
+                  />
+                  </label>
 
-<button  > Refresh </button>
-</form>
+
+                  {/*Date1*/}
+                  <label style={{boxSizing:'border-box', height:'100px',width:'400px'}}>
+                  <span>Name:</span>
+                  <input type="date"
+                  name = "date2"
+                  value = {date2}
+                  onChange={(e) => setDate2(e.target.value)}
+                  />
+                  </label>
+                <button  > Refresh </button>
+                </form>
 
 
 <table>
@@ -157,7 +184,7 @@ console.log(sumhp + "Essa é a soma")
       <tr>
       
      
-       <td >{nomeform}</td>
+       <td ></td>
        <td > </td>
        <td >h </td>
        <td >h</td>

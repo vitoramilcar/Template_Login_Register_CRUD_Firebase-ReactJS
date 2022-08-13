@@ -33,6 +33,11 @@ const Home =  () => {
 //-----------------------------------------------------------------------------------------------------
 async function calc_hshm(docsid){
 
+  let data = new Date();
+  let diames = data.getDate()
+  let diasemana = data.getDay()
+  let anomes = (data.getMonth()+1).toString()+( data.getFullYear().toString())
+
   let datapasta = ((data.getMonth()+1).toString()) + ((data.getFullYear()).toString())+ (data.getDate().toString());
   let sumhs = 0;
   let sumhm = 0;
@@ -78,7 +83,8 @@ async function calc_hshm(docsid){
 
  await  updateDoc(doc(db, "users", docsid,"Data", datapasta), {
     hora_semana:sumhs,
-    hora_mes:sumhm
+    hora_mes:sumhm,
+    ultimodia:true,
 
   }); 
 
@@ -135,7 +141,8 @@ async function calc_hshm(docsid){
           anopasta: data.getFullYear(),
           mespasta:(data.getMonth()+1),
           diamespasta:data.getDate(),
-          equipe:docfirstdata.data().equipe
+          equipe:docfirstdata.data().equipe,
+          date: new Date()
           
           
         }); 

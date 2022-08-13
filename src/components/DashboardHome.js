@@ -1,7 +1,7 @@
 import statuson from '../assets/statuson.png'
 import statusoff from '../assets/statusoff.png'
 
-var tempodia
+
 
 function DashboardHome({nomec, horac, horas,horaw,horam,meta,team,horad}) {
 

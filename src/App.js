@@ -19,6 +19,8 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home'
 import HomeUser from './pages/HomeUser/HomeUser';
+import NameMM from './pages/NameMM/NameMM';
+import FilterDate from './pages/FilterDate/FilterDate';
 
 
 
@@ -72,11 +74,11 @@ function App() {
       
       {user && (
 
-
+   <>
 <Route path="/" element={ <Home/>}/>
-   
-
-
+   <Route path='/filterName' element={<NameMM/>}/>
+   <Route path='/filterDate' element={<FilterDate/>}/>
+       </>
       )}
 
     {!user && (

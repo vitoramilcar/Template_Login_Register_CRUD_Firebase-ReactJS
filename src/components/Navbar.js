@@ -42,11 +42,18 @@ const Navbar = () => {
       {user &&(
       <>
         <li>
-          <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Home</NavLink>
+          <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Day</NavLink>
+        </li>
+        <li>
+          <NavLink to ="/filterName" className={({ isActive }) => (isActive ? styles.active : "")}>Person</NavLink>
+        </li>
+        <li>
+          <NavLink to ="/filterDate" className={({ isActive }) => (isActive ? styles.active : "")}>Period</NavLink>
         </li>
         <li>
            <button onClick = {logout}>Logout</button>
         </li>
+        
       </>
       )
       }

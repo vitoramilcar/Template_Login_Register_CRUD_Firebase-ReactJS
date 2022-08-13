@@ -4,8 +4,8 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged,getAuth } from 'firebase/auth';
 
-var Nome = []
 
+let arrayvazio = [{}]
 function FilterDate() {
 
    
@@ -14,7 +14,9 @@ function FilterDate() {
     const { auth } = useAuthentication();
     const [date1,setDate1] = useState("");
     const [date2,setDate2] = useState("");
+    const [error,setError] = useState("");
     const[objetouser,setObjetoUser] = useState([])
+
   
 
     useEffect(() => {
@@ -24,110 +26,94 @@ function FilterDate() {
       }, [auth]);
 
 
+            //--------------Função mili to HH:MM-------------------
+  function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+  }
+  
+  function convertMsToHM(milliseconds) {
+    console.log(milliseconds)
+    let seconds = Math.floor(milliseconds / 1000);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+  
+    console.log(hours+":"+minutes)
+    seconds = seconds % 60;
+    // 👇️ if seconds are greater than 30, round minutes up (optional)
+    minutes = seconds >= 30 ? minutes + 1 : minutes;
+  
+    minutes = minutes % 60;
+
+    
+    return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
+  }
+
+
       const handleSubmit = async(e)=>{
         e.preventDefault();
-       
+        setError ("");
       
+       
+
+
+        if((date1 ===""|| date2==='')|| (date1>date2)){
+            setObjetoUser([])
+            setError("Invalid Date")
+            return
+        
+        
+          }
+
 //Segunda Solução-------------------------------------- 
 
-console.log(new Date (Date.parse(date1)+10800000))
-console.log(new Date (Date.parse(date2)+97200000))
 
 
-let sumhp =0;
-console.log("oi")
-        const Filterdatetodate= query(collectionGroup(db, 'Data'),where("nomec", '==','Bill Gates'),orderBy("date") ,
-        startAt(new Date (Date.parse(date1)+10800000)),endAt(new Date (Date.parse(date2)+97200000)))
-        const querySnapshot = await getDocs(Filterdatetodate);
-       (querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
-        sumhp = sumhp +doc.data().hora_dia
-       
-}));
+    let Nome = []
+    let Somah =[]
+    
+    let n =0
+    const collectionRef =  query(collection(db, 'users'),orderBy('nomecompleto','asc'));
 
-console.log(sumhp + "Essa é a soma")
-        
+    const queryNome = await getDocs(collectionRef);
+    queryNome.forEach((doc) => {
 
-  // PRimeira solução--------------------------------------
-  
-/*  
+        Nome[n] = doc.data().nomecompleto
+        n++;
 
-        let Nome = []
-        let n =0
-      const collectionRef = await query(collection(db, 'users'),orderBy('nomecompleto','asc'));
-
-      const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
- 
-            Nome[n] = doc.data().nomecompleto
-            n++;
-  
     });
 
- 
-    let horap =[]
-    for(let i=0;i<Nome.length;i++){
-        let dia =1;
-    let mes=8;
-    let ano=2022;
-    
-    let dia2 =11;
-    let mes2=8;
-    let ano2=2022;
-   let sumhp=0;
- 
-        console.log( Nome[i])
 
-    
-    
-    
-    while((dia !==dia2+1) || (mes !==mes2) || (ano !==ano2) ){
-        
-       
-        const Filterdatetodate= query(collectionGroup(db, 'Data'),where("nomec", '==',Nome[i]),
-        where("diamespasta", '==',dia),where("mespasta", '==', mes),where("anopasta", '==', ano))
-    
+
+
+for(let i=0;i<Nome.length;i++){
+        const Filterdatetodate= query(collectionGroup(db, 'Data'),where("nomec", '==',Nome[i]),orderBy("date") ,
+        startAt(new Date (Date.parse(date1)+10800000)),endAt(new Date (Date.parse(date2)+97200000)))
         const querySnapshot = await getDocs(Filterdatetodate);
-       (querySnapshot &&  querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
-        sumhp = sumhp + doc.data().hora_dia
-
-    
+        let sumhp =0;
+       (querySnapshot && querySnapshot.forEach((doc) => {
+        sumhp = sumhp +doc.data().hora_dia
+        Somah[i]=sumhp;
+        arrayvazio[i] ={nome:Nome[i],soma:sumhp};
 }));
 
 
-
-                dia++;
-                if(dia>31){
-                mes++;
-                dia =1
-                }
-                if(mes>12){
-                ano++;
-                mes=1
-
-                }
-                console.log(sumhp)
-                horap[i]=sumhp;
-    }
-}
-    console.log("aqui veio")
-    for(let i=0;i<Nome.length;i++){
-
-        console.log(Nome[i])
-        console.log(horap[i])
-
-        setNomeForm(Nome[i])
-        
-    }
-*/
+}      
 
 
+setObjetoUser(arrayvazio.map(doc => ({
+          
+    items: doc
+  })) 
+  )
 
+  
 
-
-
-
+   objetouser.map((doc)=>
+   
+    console.log(objetouser.length)
+   
+   )
+   
 
    
     
@@ -137,14 +123,14 @@ console.log(sumhp + "Essa é a soma")
   return (
     <div>
 
-<form onSubmit={handleSubmit} style={{display :"flex"}} >
+<form onSubmit={handleSubmit}  >
 
     
   
                  
                   {/*Date1*/}
                   <label style={{boxSizing:'border-box', height:'100px',width:'400px'}}>
-                  <span>Name:</span>
+                  <span>First Date:</span>
                   <input type="date"
                   name = "date1"
                   value = {date1}
@@ -155,48 +141,60 @@ console.log(sumhp + "Essa é a soma")
 
                   {/*Date1*/}
                   <label style={{boxSizing:'border-box', height:'100px',width:'400px'}}>
-                  <span>Name:</span>
+                  <span>Second Date:</span>
                   <input type="date"
                   name = "date2"
                   value = {date2}
                   onChange={(e) => setDate2(e.target.value)}
                   />
                   </label>
-                <button  > Refresh </button>
+                <button  > Submit </button>
+
+                
                 </form>
+                
 
-
-<table>
-    <thead >
-  <tr >
-  <th>Name</th>
-  <th>Date</th>
-  <th>Hours</th>
-  <th>Goal</th>
+<table style ={{ marginLeft: 'auto',
+  marginRight: 'auto'}}>
+    <thead  >
+  <tr style ={{textAlign:'center' }}>
+  <th >Name</th>
+  <th > Total Hours</th>
+  
   
   </tr>
   </thead>
+  {objetouser.map((objetodado)=>(
+    
+     
+      
+    <tbody key ={objetodado.items.nome + objetodado.items.soma} >
+    <tr style ={{textAlign:'center'}}>
+    
+   
+     <td >{objetodado.items.nome}</td>
+     <td >{convertMsToHM(objetodado.items.soma)}h</td>
+      
+     
+     
+    </tr>
+      </tbody>
   
-    
-     
-      
-      <tbody  >
-      <tr>
-      
-     
-       <td ></td>
-       <td > </td>
-       <td >h </td>
-       <td >h</td>
-        
-       
-       
-      </tr>
-        </tbody>
-    
+  ))}
     
      </table>
-   
+     {objetouser && objetouser.length === 0 && (
+      < >
+        {error && <p style={{color:"red"}} className = "error ">{error}</p>}
+       
+      </>
+    )}
+    {objetouser && objetouser.length === 1 && (
+      < >
+       
+        <p>Não existe  Registro</p>
+      </>
+    )}
     </div>
   )
 }

@@ -117,7 +117,7 @@ function ConverTNameMes(num){
     
           <table>
     <thead >
-  <tr >
+  <tr  style ={{textAlign:'center'}}>
   <th>Name</th>
   <th>Date</th>
   <th>Hours</th>
@@ -130,7 +130,7 @@ function ConverTNameMes(num){
      
       
       <tbody key ={objetodado.items.cpf + objetodado.items.mespasta+objetodado.items.anopasta} >
-      <tr>
+      <tr style ={{textAlign:'center'}}>
       
      
        <td >{objetodado.items.nomec}</td>

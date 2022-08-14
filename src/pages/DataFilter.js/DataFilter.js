@@ -7,8 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 
 
-//style
-import styles from "./Home.module.css"
+
 
 // components
 import TableHeader from "../../components/TableHeader";
@@ -20,6 +19,7 @@ const DataFilter = () => {
   const [user, setUser] = useState(undefined);
   const [ano,setAno] = useState("");
   const [mes,setMes] = useState("");
+  const [dia,setdia] = useState("");
   const [nomeform,setNomeForm] = useState("");
   const { auth } = useAuthentication();
   const[objetouser,setObjetoUser] = useState("")
@@ -37,10 +37,14 @@ const DataFilter = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-/*
-if (nomeform ===""){
+    
+    console.log(nomeform)
 
-  const dataAllUserDayMonth=await query(collectionGroup(db, mes+ano),orderBy("hora_chegada","asc"));
+
+if(nomeform ===""){
+  const dataAllUserDayMonth=await query(collectionGroup(db, 'Data'),where("hora_chegada","!=",0),
+  where("mespasta","==",parseInt(mes)),where("anopasta","==",parseInt(ano)),where("diamespasta","==",parseInt(dia)),
+  orderBy("hora_chegada","asc"));
 
   onSnapshot(dataAllUserDayMonth, (snapshot) => {
     
@@ -51,38 +55,30 @@ if (nomeform ===""){
     )
   
   })
+
 }
-  else{
+ 
+else{
 
-    const UserDaTaMonth=await query(collectionGroup(db, mes+ano),where("nomec", '==',nomeform));
+  const dataAllUserDayMonth=await query(collectionGroup(db, 'Data'),where("hora_chegada","!=",0),
+  where("mespasta","==",parseInt(mes)),where("anopasta","==",parseInt(ano)),where("diamespasta","==",parseInt(dia)),
+  where("nomec","==",nomeform),
+  orderBy("hora_chegada","asc"));
 
-    await onSnapshot(UserDaTaMonth, (snapshot) => {
-     
-     setObjetoUser(snapshot.docs.map(doc => ({
-       
-       items: doc.data()
-     })) 
-     )
-   
-   })
-  }
-
-*/
-/*
-const UserDaTaMonth=await query(collectionGroup(db, 'landmarks'),where("name", '==','jose'));
-
-    await onSnapshot(UserDaTaMonth, (snapshot) => {
-     
-     setObjetoUser(snapshot.docs.map(doc => ({
-       items: doc.data()
-     })) 
-     )
-   
-   })
-  //}
-*/
+  onSnapshot(dataAllUserDayMonth, (snapshot) => {
+    
+    setObjetoUser(snapshot.docs.map(doc => ({
+      
+      items: doc.data()
+    })) 
+    )
+  
+  })
 
 
+
+
+}
 
 
 
@@ -95,15 +91,17 @@ const UserDaTaMonth=await query(collectionGroup(db, 'landmarks'),where("name", '
   return (
 <div >
 
-      <form  className ={styles.formzero}onSubmit={handleSubmit}>
+      <form  style ={{display : "flex"}}onSubmit={handleSubmit}>
 
 
-              <label >
+              <label  style ={{padding: '30px'}} >
               {/*Ano */}
               <span>Year:</span>
               <input type="text"
               name = "ano"
               required
+              min="2022"
+              max="2030"
               placeholder="Year" 
               value = {ano}
               onChange={(e) => setAno(e.target.value)} 
@@ -111,23 +109,41 @@ const UserDaTaMonth=await query(collectionGroup(db, 'landmarks'),where("name", '
              
               </label>
 
-            <label >
+            <label style ={{padding: '30px'}} >
               {/*Mês */}
               <span>Month:</span>
               <input type="text"
               name = "mes"
+              min="1"
+              max="12"
               required
               placeholder="Month" 
               value = {mes}
               onChange={(e) => setMes(e.target.value)} 
               />
              
-              </label>
-              {/*Nome*/}
-              <label >
-              <span>Name:</span>
+             </label >
+
+              {/*Dia*/}
+              <label style ={{padding: '30px'}} >
+              <span>Day:</span>
               <input type="text"
               name = "dia"
+              min="1"
+              max="31"
+              placeholder="Day"
+              required
+              value = {dia}
+              onChange={(e) => setdia(e.target.value)}
+              
+              />
+              </label>
+             
+              {/*Nome*/}
+              <label style ={{padding: '30px'}}>
+              <span>Name:</span>
+              <input type="text"
+              name = "name"
               placeholder="Name"
               value = {nomeform}
               onChange={(e) => setNomeForm(e.target.value)}
@@ -135,7 +151,7 @@ const UserDaTaMonth=await query(collectionGroup(db, 'landmarks'),where("name", '
               />
               </label>
      
-        <button style ={{width:"70px", height:"60px" }}>Search</button>
+        <button style ={{ width:"100px", height:"30px",marginTop: '60px'  ,paddingLeft: '30px', paddingRight: '70px' }}>Search</button>
 
         
       </form>
@@ -148,12 +164,18 @@ const UserDaTaMonth=await query(collectionGroup(db, 'landmarks'),where("name", '
   <TableHeader/>
 )}    
          
-{objetouser && objetouser.map((objetodado)=>(
-  
-  
-  console.log({objetodado})
-  
+ {objetouser && objetouser.map((objetodado)=>(
 
+
+
+<UserDataTable   key ={objetodado.items.diamespasta+objetodado.items.userid}
+nomec = {objetodado.items.nomec} 
+horac = {objetodado.items.hora_chegada.toMillis() }
+horas = {objetodado.items.hora_saida== null ? "": objetodado.items.hora_saida.toMillis() }
+horaw = {objetodado.items.hora_semana}
+horam ={objetodado.items.hora_mes}
+meta ={objetodado.items.meta}
+/> 
 ))}
 
 {objetouser && objetouser.length === 0 && (

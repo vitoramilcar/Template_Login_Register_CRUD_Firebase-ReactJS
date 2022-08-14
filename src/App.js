@@ -22,6 +22,8 @@ import HomeUser from './pages/HomeUser/HomeUser';
 import NameMM from './pages/NameMM/NameMM';
 import FilterDate from './pages/FilterDate/FilterDate';
 import UsersDelete from './pages/UsersDelete/UsersDelete';
+import DataFilter from './pages/DataFilter.js/DataFilter';
+
 
 
 
@@ -73,13 +75,18 @@ function App() {
       <div className ="container">
       <Routes>
       
+
+
+
+      
       {user && (
 
    <>
-<Route path="/" element={ <Home/>}/>
-   <Route path='/filterName' element={<NameMM/>}/>
-   <Route path='/filterDate' element={<FilterDate/>}/>
-   <Route path='/Users' element={<UsersDelete/>}/>
+ <Route path="/" element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ? <Home/> : <HomeUser/>}/>
+   <Route path='/filterName' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <NameMM/>}/>
+   <Route path='/filterDate' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' &&<FilterDate/>}/>
+   <Route path='/Users' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <UsersDelete/>}/>
+   <Route path='/DataFilter' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <DataFilter/>}/>
        </>
       )}
 

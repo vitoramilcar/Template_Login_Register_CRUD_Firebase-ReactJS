@@ -6,12 +6,44 @@ import { useAuthValue } from "../context/AuthContext";
 
 import styles from "./Navbar.module.css";
 import logo3t from "../assets/Logo3T.png"
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged,getAuth } from 'firebase/auth';
 
 
 const Navbar = () => {
 
   const{user} = useAuthValue();
   const {logout} = useAuthentication();
+  const [uidauth,setUidAuth] = useState("")
+
+
+
+
+
+
+
+
+  const autenti = getAuth();
+  onAuthStateChanged(autenti, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      setUidAuth(user.uid)
+      
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+
+  });
+
+
+
+
+
+
+
 
   return (
     <nav className={styles.navbar}>
@@ -21,12 +53,14 @@ const Navbar = () => {
         </NavLink>
         <ul className={styles.links_list}>
 
-    {!user && (
+    {!user &&  (
       <>
       
       
       {/*------------------ Login Link -----------------------*/}
       <li>
+
+      
       <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Login </NavLink>
         </li>
 
@@ -39,19 +73,29 @@ const Navbar = () => {
       </>
     )}
         
-      {user &&(
+      {user &&   (
       <>
         <li>
-          <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Day</NavLink>
+        {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ?
+          <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Day</NavLink>:
+          <NavLink to ="/" className={({ isActive }) => (isActive ? styles.active : "")}>Home</NavLink>}
         </li>
         <li>
-          <NavLink to ="/filterName" className={({ isActive }) => (isActive ? styles.active : "")}>Person</NavLink>
+         {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ? 
+         <NavLink to ="/filterName" className={({ isActive }) => (isActive ? styles.active : "")}>Person</NavLink>: null}
+          
         </li>
         <li>
-          <NavLink to ="/filterDate" className={({ isActive }) => (isActive ? styles.active : "")}>Period</NavLink>
+        {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ?
+          <NavLink to ="/filterDate" className={({ isActive }) => (isActive ? styles.active : "")}>Period</NavLink>:null}
         </li>
         <li>
-          <NavLink to ="/Users" className={({ isActive }) => (isActive ? styles.active : "")}>Users</NavLink>
+        {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ?
+          <NavLink to ="/DataFilter" className={({ isActive }) => (isActive ? styles.active : "")}>Data</NavLink>:null}
+        </li>
+        <li>
+        {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ?
+          <NavLink to ="/Users" className={({ isActive }) => (isActive ? styles.active : "")}>Users</NavLink>:null}
         </li>
         <li>
            <button onClick = {logout}>Logout</button>
@@ -60,7 +104,7 @@ const Navbar = () => {
       </>
       )
       }
-     
+       
         
 
 

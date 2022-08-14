@@ -53,7 +53,7 @@ const UserDataTable = ({ nomec, horac, horas,horaw,horam,meta}) => {
       <table>
         
       <tbody >
-    <tr style={ gethour(horas-horac) < parseInt(meta) ? ({color:"red"}):({color:"black"})} >
+    <tr  >
      <td >{nomec}</td>
      <td >{horacf}</td>
      <td >{horasf}</td>

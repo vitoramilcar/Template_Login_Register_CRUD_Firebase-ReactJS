@@ -19,10 +19,7 @@ const Home =  () => {
  
  
   let data = new Date();
-  let diames = data.getDate()
-  let diasemana = data.getDay()
-  let anomes = (data.getMonth()+1).toString()+( data.getFullYear().toString())
-
+ 
 
   const [user, setUser] = useState(undefined);
   const { auth } = useAuthentication();

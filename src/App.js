@@ -21,6 +21,7 @@ import Home from './pages/Home/Home'
 import HomeUser from './pages/HomeUser/HomeUser';
 import NameMM from './pages/NameMM/NameMM';
 import FilterDate from './pages/FilterDate/FilterDate';
+import UsersDelete from './pages/UsersDelete/UsersDelete';
 
 
 
@@ -78,6 +79,7 @@ function App() {
 <Route path="/" element={ <Home/>}/>
    <Route path='/filterName' element={<NameMM/>}/>
    <Route path='/filterDate' element={<FilterDate/>}/>
+   <Route path='/Users' element={<UsersDelete/>}/>
        </>
       )}
 

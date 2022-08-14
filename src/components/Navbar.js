@@ -51,6 +51,9 @@ const Navbar = () => {
           <NavLink to ="/filterDate" className={({ isActive }) => (isActive ? styles.active : "")}>Period</NavLink>
         </li>
         <li>
+          <NavLink to ="/Users" className={({ isActive }) => (isActive ? styles.active : "")}>Users</NavLink>
+        </li>
+        <li>
            <button onClick = {logout}>Logout</button>
         </li>
         

@@ -79,7 +79,8 @@ const Register =  () => {
         idcard:uid,
         cpf: cpf,
         equipe:equipe,
-        nomecompleto:displayName+" "+displayLastName
+        nomecompleto:displayName+" "+displayLastName,
+        uidp:res.uid,
       }); 
     }
 

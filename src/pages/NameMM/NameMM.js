@@ -103,6 +103,7 @@ function ConverTNameMes(num){
                   <input type="text"
                   name = "dia"
                   placeholder="Name"
+                  required
                   value = {nomeform}
                   onChange={(e) => setNomeForm(e.target.value)}
                   

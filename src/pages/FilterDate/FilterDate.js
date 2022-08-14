@@ -108,11 +108,6 @@ setObjetoUser(arrayvazio.map(doc => ({
 
   
 
-   objetouser.map((doc)=>
-   
-    console.log(objetouser.length)
-   
-   )
    
 
    

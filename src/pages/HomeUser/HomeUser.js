@@ -1,4 +1,4 @@
-import { query, collectionGroup, where, getDocs, addDoc , collection, orderBy, doc, getDoc, onSnapshot} from "firebase/firestore";
+import { query, collectionGroup, where, orderBy, doc, getDoc, onSnapshot} from "firebase/firestore";
 import {db} from "../../firebase/config"
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useState, useEffect } from 'react';
@@ -20,7 +20,6 @@ const HomeUSer = () => {
   const [ano,setAno] = useState("");
   const [mes,setMes] = useState("");
   const [dia,setdia] = useState("");
-  const [nomeform,setNomeForm] = useState("");
   const { auth } = useAuthentication();
   const[objetouser,setObjetoUser] = useState("")
 
@@ -38,7 +37,7 @@ const HomeUSer = () => {
     e.preventDefault();
 
     
-    console.log(user.uid + "AQUI É O USER") 
+ 
 
     const nomec = await getDoc(doc(db, "users", user.uid)); 
      

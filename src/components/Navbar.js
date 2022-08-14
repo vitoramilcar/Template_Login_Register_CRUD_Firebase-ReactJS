@@ -82,7 +82,9 @@ const Navbar = () => {
         </li>
         <li>
          {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ? 
-         <NavLink to ="/filterName" className={({ isActive }) => (isActive ? styles.active : "")}>Person</NavLink>: null}
+         <NavLink to ="/filterName" className={({ isActive }) => (isActive ? styles.active : "")}>Person</NavLink>: 
+         <NavLink to ="/User" className={({ isActive }) => (isActive ? styles.active : "")}>User</NavLink>
+         }
           
         </li>
         <li>
@@ -97,6 +99,7 @@ const Navbar = () => {
         {uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ?
           <NavLink to ="/Users" className={({ isActive }) => (isActive ? styles.active : "")}>Users</NavLink>:null}
         </li>
+        
         <li>
            <button onClick = {logout}>Logout</button>
         </li>

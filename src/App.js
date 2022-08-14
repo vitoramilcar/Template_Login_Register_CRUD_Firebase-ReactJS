@@ -23,6 +23,7 @@ import NameMM from './pages/NameMM/NameMM';
 import FilterDate from './pages/FilterDate/FilterDate';
 import UsersDelete from './pages/UsersDelete/UsersDelete';
 import DataFilter from './pages/DataFilter.js/DataFilter';
+import UserUpdate from './pages/UserUpdate/UserUpdate';
 
 
 
@@ -87,6 +88,7 @@ function App() {
    <Route path='/filterDate' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' &&<FilterDate/>}/>
    <Route path='/Users' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <UsersDelete/>}/>
    <Route path='/DataFilter' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <DataFilter/>}/>
+   <Route path='/User' element={uidauth !=='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <UserUpdate/>}/>
        </>
       )}
 

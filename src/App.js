@@ -95,6 +95,12 @@ function App() {
       <>
       <Route path="/" element={ <Login/>}/>
       <Route path="/register" element={ <Register/>}/>
+      <Route path="/filterName" element={ <Login/>}/>
+      <Route path="/filterDate" element={ <Login/>}/>
+      <Route path="/Users" element={ <Login/>}/>
+      <Route path="//DataFilter" element={ <Login/>}/>
+      
+      
       </>
 
     )}

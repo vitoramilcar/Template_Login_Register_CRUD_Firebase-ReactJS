@@ -97,7 +97,7 @@ else{
               <label  style ={{padding: '30px'}} >
               {/*Ano */}
               <span>Year:</span>
-              <input type="text"
+              <input type="number"
               name = "ano"
               required
               min="2022"
@@ -112,7 +112,7 @@ else{
             <label style ={{padding: '30px'}} >
               {/*Mês */}
               <span>Month:</span>
-              <input type="text"
+              <input type="number"
               name = "mes"
               min="1"
               max="12"
@@ -127,7 +127,7 @@ else{
               {/*Dia*/}
               <label style ={{padding: '30px'}} >
               <span>Day:</span>
-              <input type="text"
+              <input type="number"
               name = "dia"
               min="1"
               max="31"

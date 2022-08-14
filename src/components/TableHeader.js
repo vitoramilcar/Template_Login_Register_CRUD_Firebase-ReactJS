@@ -2,7 +2,7 @@
 function TableHeader() {
   return (
 
-    <table>
+    <table >
           <thead >
         <tr >
         <th>Nome</th>

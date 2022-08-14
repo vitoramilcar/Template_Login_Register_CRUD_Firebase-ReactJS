@@ -10,120 +10,73 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 
 // components
-
+import TableHeader from "../../components/TableHeader";
 import UserDataTable from "../../components/UserDataTable";
 
-const HomeUser = () => {
+const HomeUSer = () => {
+  
   
   const [user, setUser] = useState(undefined);
   const [ano,setAno] = useState("");
   const [mes,setMes] = useState("");
-  const [dia,setDia] = useState("");
+  const [dia,setdia] = useState("");
+  const [nomeform,setNomeForm] = useState("");
   const { auth } = useAuthentication();
   const[objetouser,setObjetoUser] = useState("")
 
 
-
+  
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
   }, [auth]);
  
-  
- 
- 
 
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  /*  
-   if(dia ===""){
-    console.log("BUSCA SEM DIA");
-    // Encontra todos do mes , com o id especifico
-          console.log(user.uid)
-    const museums = query(collectionGroup(db, mes+ano), where('userid', '==', user.uid))
-    const querySnapshot =  await getDocs(museums);
-    setObjetoUser(querySnapshot)
-    console.log(typeof(objetouser)+ "ESSA PORA È O OBJETO")
-    ///*
-    querySnapshot.forEach((doc) => {
-   if(doc){
-   console.log(doc.id, ' => ', doc.data());
-    console.log(typeof(doc.data())+"tipo do docdata()")
     
-   }
-   else {
-    console.log("doc nao encontrado")
-   }
+    console.log(user.uid + "AQUI É O USER") 
+
+    const nomec = await getDoc(doc(db, "users", user.uid)); 
+     
    
-});
 
-   }
-   else{
 
-      //FAZ a BUSCA de um dia, mes e ano especifico
-    console.log(user.uid)
-    const docRef = await doc(db, "users", user.uid,mes+ano, dia);
-    const docSnap = await getDoc(docRef);
-   
-   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-  } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-  }
-  let dados = docSnap.data()
-  console.log("BUSCA COM DIA")
-  //console.log(dados.mespasta)
+  const dataAllUserDayMonth=await query(collectionGroup(db, 'Data'),where("hora_chegada","!=",0),
+  where("mespasta","==",parseInt(mes)),where("anopasta","==",parseInt(ano)),where("diamespasta","==",parseInt(dia)),
+  where("nomec","==",nomec.data().nomecompleto),
+  orderBy("hora_chegada","asc"));
 
-   }
-   
- 
-*/
-
-/*
-// PESQUISA o TODAS as PASTASdo mes especifico, todos os ids ---Para adm
-const dataAllUserDayMonth=(collectionGroup(db, mes+ano));
-const querySnapshot = await getDocs(dataAllUserDayMonth);
-querySnapshot.forEach((doc) => {
-    console.log(doc.id, ' => ', doc.data());
-    let dataUsers = doc.data()
-  });
-
-  */
-  const dataAllUserDayMonth=await (collectionGroup(db, mes+ano));
-
-onSnapshot(dataAllUserDayMonth, (snapshot) => {
-  
-  setObjetoUser(snapshot.docs.map(doc => ({
+  onSnapshot(dataAllUserDayMonth, (snapshot) => {
     
-    items: doc.data()
-  })) 
-  )
-
-})
-
-
+    setObjetoUser(snapshot.docs.map(doc => ({
+      
+      items: doc.data()
+    })) 
+    )
   
+  })
+
 };
-
 
 
   return (
 <div >
-      <h1>Search</h1>
-      <form  onSubmit={handleSubmit}>
+
+      <form  style ={{display : "flex"}}onSubmit={handleSubmit}>
 
 
-              <label >
+              <label  style ={{padding: '30px'}} >
               {/*Ano */}
               <span>Year:</span>
-              <input type="text"
+              <input type="number"
               name = "ano"
               required
+              min="2022"
+              max="2030"
               placeholder="Year" 
               value = {ano}
               onChange={(e) => setAno(e.target.value)} 
@@ -131,39 +84,52 @@ onSnapshot(dataAllUserDayMonth, (snapshot) => {
              
               </label>
 
-            <label >
+            <label style ={{padding: '30px'}} >
               {/*Mês */}
               <span>Month:</span>
-              <input type="text"
+              <input type="number"
               name = "mes"
+              min="1"
+              max="12"
               required
               placeholder="Month" 
               value = {mes}
               onChange={(e) => setMes(e.target.value)} 
               />
              
-              </label>
-              {/*Dia */}
-              <label >
+             </label >
+
+              {/*Dia*/}
+              <label style ={{padding: '30px'}} >
               <span>Day:</span>
-              <input type="text"
+              <input type="number"
               name = "dia"
+              min="1"
+              max="31"
               placeholder="Day"
+              required
               value = {dia}
-              onChange={(e) => setDia(e.target.value)}
+              onChange={(e) => setdia(e.target.value)}
               
               />
               </label>
-     
-        <button >Pesquisar</button>
+             
+            
+        <button style ={{ width:"100px", height:"30px",marginTop: '60px'  ,paddingLeft: '30px', paddingRight: '70px' }}>Search</button>
 
         
       </form>
-      <div>
 
+
+      
+    
+
+{objetouser &&(
+  <TableHeader/>
+)}    
          
-{objetouser && objetouser.map((objetodado)=>(
-  
+ {objetouser && objetouser.map((objetodado)=>(
+
 
 
 <UserDataTable   key ={objetodado.items.diamespasta+objetodado.items.userid}
@@ -183,8 +149,8 @@ meta ={objetodado.items.meta}
 )}
 
 </div>
- </div>
+
   );
 };
 
-export default HomeUser;
+export default HomeUSer;

@@ -50,7 +50,8 @@ const UserDataTable = ({ nomec, horac, horas,horaw,horam,meta}) => {
   return (
       
     
-      <table>
+      <table style ={{ marginLeft: 'auto',
+      marginRight: 'auto'}}>
         
       <tbody >
     <tr  >

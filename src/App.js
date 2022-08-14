@@ -89,6 +89,7 @@ function App() {
    <Route path='/Users' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <UsersDelete/>}/>
    <Route path='/DataFilter' element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <DataFilter/>}/>
    <Route path='/User' element={uidauth !=='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' && <UserUpdate/>}/>
+   <Route path="/Register" element={uidauth ==='UbwqdY8BPhTOQSkPhbOzGfjJQMP2' ? <Home/> : <HomeUser/>}/>
        </>
       )}
 

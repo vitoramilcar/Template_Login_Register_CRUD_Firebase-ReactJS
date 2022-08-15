@@ -172,7 +172,7 @@ function UsersDelete() {
 
      {documents && documents.length === 0 && (
       < >
-          <p>Não existe registros </p>
+          <p style={{paddingLeft:"100px", color:"red", fontSize:"1.3em"}}>User not found </p>
        
       </>
     )}

@@ -1,8 +1,14 @@
 .footer {
-    height: 150px;
+    height: 200px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    background-color: rgb(218, 24, 218);
+    background-color: #000066;
   }
+
+  .imagelogo{
+    width: 250px;
+    height: 200px;
+    object-fit: fill;
+    padding-left: 300px;
+    
+    }

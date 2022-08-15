@@ -20,11 +20,19 @@ const Home =  () => {
  
   let data = new Date();
  
-
+  const [userid, setUserid] = useState(undefined);
   const [user, setUser] = useState(undefined);
   const { auth } = useAuthentication();
   const [documents, setDocuments] = useState(null);
   const[objetouser,setObjetoUser] = useState("")
+
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+
+    HomeDash();
+  }
+
 
 
 //-----------------------------------------------------------------------------------------------------
@@ -94,8 +102,8 @@ async function calc_hshm(docsid){
 
 
 
-  const handleSubmit = async(e)=>{
-    e.preventDefault();
+async function HomeDash() {
+   
 
     
    //--------------Cria uma pasta do dia para a pessoa que não tiver------------------------------------------------------------ 
@@ -182,26 +190,25 @@ async function calc_hshm(docsid){
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
+      setUserid(user.uid)
     });
   }, [auth]);
  
 
 
 
-  
+  useEffect(() => {
+   HomeDash()
+  }, [userid]);
 
 
-
+ 
 
 
   return (
 <div >
 
-<form onSubmit={handleSubmit} style={{display :"flex"}} >
 
-
-<button  > Refresh </button>
-</form>
 
 
   
@@ -230,6 +237,10 @@ horad ={objetodado.items.hora_dia}
   </div>
 )}
 
+<form  style ={{ marginLeft: 'auto',
+    marginRight: 'auto'}}onSubmit={handleSubmit} >
+<button style ={{ marginLeft:"200px", display: 'block'}} >Refresh</button>
+</form>
 
 </div>
 

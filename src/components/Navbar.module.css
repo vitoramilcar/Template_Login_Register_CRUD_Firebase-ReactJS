@@ -4,7 +4,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.5em 2em;
-    background-color: rgb(218, 24, 218);
+    background-color: #000066;
+    font-weight: bold;
+    
   }
   
   .brand {
@@ -31,7 +33,7 @@
   
   .active {
     background-color: #000;
-    color: #fff;
+    color: #046E28;
   }
 
   .imagelogo{
